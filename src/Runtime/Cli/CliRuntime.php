@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Marshal\Server\Runtime\Cli;
 
 use Marshal\Server\Runtime\RuntimeInterface;
-use Symfony\Component\Console\Application;
 
 class CliRuntime implements RuntimeInterface
 {

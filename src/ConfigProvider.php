@@ -11,7 +11,6 @@ final class ConfigProvider
         return [
             'events' => $this->getActionsConfig(),
             'dependencies' => $this->getDependencies(),
-            'middleware_pipeline' => $this->getMiddlewarePipeline(),
         ];
     }
 
@@ -29,7 +28,6 @@ final class ConfigProvider
         $dependencies = [
             'factories' => [
                 Listener\ServerEventsListener::class => Listener\ServerEventsListenerFactory::class,
-                Middleware\FinalResponseMiddleware::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
                 Runtime\Apache2Handler\Apache2Handler::class => Runtime\Apache2Handler\Apache2HandlerFactory::class,
                 Runtime\Cli\CliRuntime::class => Runtime\Cli\CliRuntimeFactory::class,
             ],
@@ -39,16 +37,6 @@ final class ConfigProvider
         $dependencies = \array_merge_recursive($dependencies, $routerConfig['dependencies']);
 
         return $dependencies;
-    }
-
-    private function getMiddlewarePipeline(): array
-    {
-        return [
-            \Marshal\Platform\PlatformMiddleware::class,
-            \Mezzio\Router\Middleware\RouteMiddleware::class,
-            \Mezzio\Router\Middleware\DispatchMiddleware::class,
-            Middleware\FinalResponseMiddleware::class,
-        ];
     }
 
     private function getRouterConfig(): array

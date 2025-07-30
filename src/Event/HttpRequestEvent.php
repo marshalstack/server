@@ -23,6 +23,11 @@ class HttpRequestEvent implements StoppableEventInterface
         return $this->request;
     }
 
+    public function hasResponse(): bool
+    {
+        return $this->isPropagationStopped();
+    }
+
     public function isPropagationStopped(): bool
     {
         return isset($this->response);

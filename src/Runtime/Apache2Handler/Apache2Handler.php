@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Marshal\Server\Runtime\Apache2Handler;
 
+use Laminas\Diactoros\ResponseFactory;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Marshal\Server\Event\HttpRequestEvent;
 use Marshal\Server\Runtime\RuntimeInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Marshal\Server\Event\HttpRequestEvent;
-use Laminas\Diactoros\ResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 
 class Apache2Handler implements RuntimeInterface
