@@ -19,27 +19,22 @@ class ServerEventsListener implements EventListenerInterface
     public function getListeners(): array
     {
         return [
-            HttpRequestEvent::class => ['listener' => [$this, 'onHttpRequestAction']],
+            HttpRequestEvent::class => ['listener' => [$this, 'onHttpRequestEvent']],
         ];
     }
 
-    public function onHttpRequestAction(HttpRequestEvent $event): void
+    public function onHttpRequestEvent(HttpRequestEvent $event): void
     {
-        $config = $this->container->get('config');
-        if (! \is_array($config)) {
-            return;
-        }
-
-        $middlewares = $config['middleware_pipeline'] ?? [];
-        if (! \is_array($middlewares) || empty($middlewares)) {
+        $config = $this->container->get('config')['middleware_pipeline'] ?? [];
+        if (! \is_array($config) || empty($config)) {
             return;
         }
 
         $pipeline = new MiddlewarePipe;
-        foreach ($middlewares as $middleware) {
-            $pipeline->pipe(new LazyLoadingMiddleware($this->container, $middleware));
+        foreach ($config as $middleware) {
+            $pipeline->pipe(middleware: new LazyLoadingMiddleware(container: $this->container, middleware: $middleware));
         }
 
-        $event->setResponse($pipeline->handle($event->getRequest()));
+        $event->setResponse(response: $pipeline->handle(request: $event->getRequest()));
     }
 }

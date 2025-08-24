@@ -14,8 +14,10 @@ use Psr\Http\Message\ResponseInterface;
 
 class Apache2Handler implements RuntimeInterface
 {
-    public function __construct(private EventDispatcherInterface $eventDispatcher, private bool $isDebugMode = FALSE)
-    {
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+        private bool $isDebugMode = FALSE
+    ) {
     }
 
     public function run(): void
@@ -24,7 +26,10 @@ class Apache2Handler implements RuntimeInterface
         $request = ServerRequestFactory::fromGlobals();
 
         // handle the request
-        $event = new HttpRequestEvent($request);
+        $event = new HttpRequestEvent(
+            request: $request->withAttribute(RuntimeInterface::class, self::class)
+        );
+
         try {
             $event = $this->eventDispatcher->dispatch($event);
         } catch (\Throwable $e) {

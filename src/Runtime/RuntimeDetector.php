@@ -34,8 +34,8 @@ class RuntimeDetector
         }
 
         return match ($processManager) {
-            'apache2handler' => $this->container->get(Apache2Handler::class),
-            'cli' => $this->container->get(CliRuntime::class)
+            'apache2handler'    => $this->container->get(Apache2Handler::class),
+            'cli'               => $this->container->get(CliRuntime::class)
         };
     }
 
@@ -47,8 +47,8 @@ class RuntimeDetector
     private function detectProcessManager(): string
     {
         return match (\php_sapi_name()) {
-            'cli-server', 'cli' => 'cli',
-            default => 'apache2handler',
+            'cli-server', 'cli'     => 'cli',
+            default                 => 'apache2handler',
         };
 
         // @todo expand to others
