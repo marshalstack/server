@@ -26,7 +26,7 @@ trait RuntimeProviderTrait
             foreach ($app['routes'] as $pattern => $definition) {
                 // normalize the path
                 $path = \is_string($routePrefix) && $routePrefix !== ""
-                    ? "$routePrefix$pattern"
+                    ? "/$routePrefix$pattern"
                     : $pattern;
 
                 // collect the route
